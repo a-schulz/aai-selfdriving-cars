@@ -1,5 +1,7 @@
 = Rule Base
+
 == Current states of car
+
 * driving
 ** forward
 ** backward
@@ -20,7 +22,9 @@
 ** dimmed headlights
 
 == Observation
+
 State of movable objects:
+
 * driving / moving
 ** forward
 ** backward
@@ -72,6 +76,7 @@ State of movable objects:
 ** no parking area
 
 == Action
+
 * change driving parameters
 ** de-/accelerate
 ** stopping
@@ -82,6 +87,7 @@ State of movable objects:
 * (turn wipers on/off)
 
 == Rule Base
+
 if driving & lights off
     & day
         then
