@@ -159,5 +159,100 @@ if driving & backwards
         &direction is backwardd
             then 
                 nothing   
+if driving & forward
+	&object
+		&animal 
+			&small
+			then nothing
+			&big
+			then deccelaration
+		&traffic light
+			&red
+			then stopping
+			&yellow
+			then deccelaration
+			&green 
+			then nothing
+		&person
+			&child
+			then deccelarate
+			&adult
+			then nothing
+		&traffic sign
+			&Stop
+			then stopping
+			&Hauptstraße
+			then nothing
+			&Vorfahrtgewähren
+			then deccelarate
+			&Tempolimit
+				&higher
+				then accelarate
+				&lower
+				then decelarate
+				&same 
+				then nothing
+			&vehicles
+				&relativ distance high
+				then nothing
+				&relativ distance low
+				then deccelarate
+				&relativ velocity high
+				then deccelarate
+				&relativ velocity low
+				then nothing
+				&relativ direction towards
+				then stopping
+				&relativ direction same
+				then nothing	
+	&lanes
+		&Fahhradschutzlinie
+		then deccelarate		
+	&environment
+		&daylight
+		then nothing
+		&night
+		then deccelarate
+		&rain
+		then deccelarate
+		&fogg
+		then deccelarate
+		&temperature
+			&warm
+			then nothing
+			&freeze
+			then deccelarate
+		&windy 
+		then nothing
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
