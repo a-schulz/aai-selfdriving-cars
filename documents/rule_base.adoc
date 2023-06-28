@@ -89,24 +89,52 @@ State of movable objects:
 == Rule Base
 
 if driving & lights off
-    & day
+     & day
         then
             nothing
-    & night
+     & night
         then
             turn on lights
-    & rain
+     & rain
         then
             turn on wipers
-    & fog
+     & fog
         then
             turn on fog lights
-    & snow
+     & snow
         then
             reduce speed
-    & ice
+     & ice
         then
             reduce speed
+     & windy
+        then
+            reduce speed
+     & sunny
+        then
+            nothing
+     & cloudy
+        then
+            nothing
+     & dry
+        then
+            nothing
+     & wet
+        then
+            reduce speed
+    & traffic light is red
+        then
+            stop
+    & traffic light is green
+        then
+            nothing
+    & traffic light is yellow
+        & speed is greater than 30
+            then
+                nothing
+        & speed is less than 30
+            then
+                stop
 
 
 if driving & backwards
