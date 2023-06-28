@@ -1,0 +1,83 @@
+== Current states of car
+* driving
+** forward
+** backward
+
+* turn
+** left
+** right
+
+* stopped
+** parking
+** waiting
+
+* lights on/off
+** high beam 
+** turn signal
+** fog light 
+** parking light
+** dimmed headlights
+
+== Observation
+State of movable objects:
+* driving / moving
+** forward
+** backward
+** left
+** right
+
+* animals
+** small
+*** bird 
+*** mice 
+*** fox
+
+* people
+** child
+** adult
+** senior / old
+
+* vehicles
+** car
+** truck
+** bicycle
+
+* traffic sign
+** danger signs
+*** double curve
+*** curve right
+** regulatory sign
+*** only straight ahead
+*** only left / right
+*** car forbidden 
+*** roundabout
+*** no entry
+*** speed sign
+*** ...
+** guide signs
+*** give way sign (have)
+*** give way sign (give)
+*** ...
+
+
+* lanes
+** hold line
+** arrows
+*** left
+*** right
+*** straight 
+*** combinations of them
+** restricted area
+** no parking area
+
+== Action
+* change driving parameters
+** de-/accelerate
+** stopping
+** steering (left/right)
+
+* turn lights on /off
+* perform new route planning
+* (turn wipers on/off)
+
+
