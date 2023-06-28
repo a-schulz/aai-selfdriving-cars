@@ -1,3 +1,4 @@
+= Rule Base
 == Current states of car
 * driving
 ** forward
@@ -79,5 +80,78 @@ State of movable objects:
 * turn lights on /off
 * perform new route planning
 * (turn wipers on/off)
+
+== Rule Base
+if driving & lights off
+    & day
+        then
+            nothing
+    & night
+        then
+            turn on lights
+    & rain
+        then
+            turn on wipers
+    & fog
+        then
+            turn on fog lights
+    & snow
+        then
+            reduce speed
+    & ice
+        then
+            reduce speed
+
+
+if driving & backwards
+    & animal
+        & small
+            then
+                nothing
+        
+        &big
+            then
+                decleration of the animal
+    
+    &person
+        &handicaped
+            then
+                stop
+        
+        &children
+            then
+                stop
+        
+        &adult
+            then
+                stop
+    
+    &traffic sign
+        then
+            nothing
+    
+    &traffic lights
+        then
+            nothing
+    
+    &vehicles
+        &relative distance is high
+            then 
+                nothing
+        &relative distance is low
+            then 
+                slow down
+        &velocity is fast
+            then 
+                slow down
+        &velocity is slow 
+            then
+                nothing
+        &direction is forward
+            then 
+                slow down
+        &direction is backwardd
+            then 
+                nothing   
 
 
