@@ -1,0 +1,19 @@
+if driving & lights off
+    & day
+        then
+            nothing
+    & night
+        then
+            turn on lights
+    & rain
+        then
+            turn on wipers
+    & fog
+        then
+            turn on fog lights
+    & snow
+        then
+            reduce speed
+    & ice
+        then
+            reduce speed
