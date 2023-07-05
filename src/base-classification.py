@@ -113,8 +113,8 @@ for i in range(0, len(path)):
 
 
 # test one image
-img_path= "C:\Users\schul\OneDrive - HTW Dresden\Documents\6._Semester\Applied_AI\aai-selfdriving-cars\src\dataset\unsere-autorin-faehrt-viel-rad.jpg"
-
+#img_path= "C:\Users\schul\OneDrive - HTW Dresden\Documents\6._Semester\Applied_AI\aai-selfdriving-cars\src\dataset\unsere-autorin-faehrt-viel-rad.jpg"
+img_path = "./dataset/unsere-autorin-faehrt-viel-rad.jpg"
 annotate_image(img_path)
 
 
