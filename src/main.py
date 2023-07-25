@@ -8,8 +8,9 @@
 from ultralytics import YOLO
 import cv2
 import numpy as np
-
+#import tensorflow as tf
 # get images from directory
+"""
 import os
 def is_image(filename):
     image_extensions = ['.jpg', '.jpeg', '.png']  
@@ -23,34 +24,32 @@ def get_images(dir):
         path = os.path.join(dir, file)
         if os.path.isfile(path) and is_image(file):
             # images contains images in RGB format
-            images.append(cv2.imread(path))
+            img = cv2.imread(path)
+            img = cv2.resize(img, (640,640))
+            images.append(img)
     return images
+images = get_images('./dataset/test') # python script have to be run in ./aai-selfdriving-cars
+"""
 
 # TODO: path should be not hard coded
-images = get_images('./dataset/test') # python script have to be run in ./aai-selfdriving-cars
+path = "./dataset/test/traffic_light.jpg"
+width = 640
+hight = 640
+img = cv2.imread(path)
+img = cv2.resize(img, (width, hight))
 
 ## Detect content:
 # Load a model
-model = YOLO('yolov8m.pt')  # pretrained YOLOv8n model
+model = YOLO('yolov8n.pt')  # pretrained YOLOv8n model
 
 # Run batched inference on a list of images
 # results get saved in runs/detect folder 
-results = model.predict(images[0], save=True, save_txt = True)  # return a list of Results objects
+results = model.predict(img, save=True, save_txt = True)  # return a list of Results objects
 
 # Process results list
 for result in results:
-    print(result)
-
-#    result = result.numpy() # to get an numpy object not a tensor
-#    boxes = result.boxes.xyxy # Boxes object for bbox outputs
-#    print(boxes)
-#    print(boxes[0])
-    #masks = result.masks  # Masks object for segmentation masks outputs
-    #keypoints = result.keypoints  # Keypoints object for pose outputs
-    #probs = result.probs  # Class probabilities for classification outputs
-    
-    #print(f'boxes: {boxes}'.format(boxes))
-
+    for i in result.boxes.xyxyn:
+        print(i)
 
 exit()
 
@@ -59,14 +58,24 @@ def draw_rectangle(image, points, color = (0, 255, 0), thick = 2):
     if len(points) != 4:
         raise ValueError("Die Anzahl der Eckpunkte muss 4 sein.")
     
+    for i, p in enumerate(points):
+        if i % 2 == 1:
+            # x coordinate
+            p = p * width
+        else:
+            # y coordinate
+            p = p * hight
+    print(points)
     x1, y1, x2, y2 = points
 
+    exit()
     # Zeichne das Rechteck auf das Bild
     cv2.rectangle(image, (x1,y1), (x2,y2), color=color, thickness=thick)
 
 while True: 
-    draw_rectangle(images[0], boxes[0])
-    cv2.imshow("Image", images[0])
+    draw_rectangle(img, results[0].boxes.xyxyn)
+    img = results[0].orig_img
+    cv2.imshow("Image", img)
 
     if cv2.waitKey(1) == 27:
         break
