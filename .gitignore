@@ -161,3 +161,4 @@ cython_debug/
 pyproject.toml
 poetry.lock
 /runs
+/dataset/traffic_light

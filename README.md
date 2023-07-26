@@ -10,10 +10,6 @@ To fine tune the yolov8n model we download training pictures with the src/downlo
 After that we label this pictures with the website https://www.makesense.ai/
 
 
-## Information about Data Sets
-Here are some use full Information about creating own datasets.
-We can use these information to create a data set for our own purpose.
-The structure of the dataset, described here, amies a uncomplicated way to train YOLOv8 models.
 
 # The YOLO v8
 Yolo (You only look once) is an Deep Learning Model for computer vision tasks (e.g object detection, segmentation)
@@ -29,6 +25,25 @@ They got trained at the COCO dataset and cover 79 categories:
 50: 'broccoli', 51: 'carrot', 52: 'hot dog', 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed', 
 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard', 67: 'cell phone', 68: 'microwave', 69: 'oven', 
 70: 'toaster', 71: 'sink', 72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush'
+
+# our way of "fine tuning"
+In order to be more precised for object classification with the pretrained yolo model (for example: is the detected traffic light green or red).
+We decided to detect the object with the default yolo model and use the information of the position to create a new image which just get classified.
+For classification we tried to create our own classificator. 
+We implement just a proof of concept for traffic lights and traffic signs!
+
+## problems with this approach
+### the dataset
+### the extracted image form original road scene
+* traffic lights detected from yolo may have no light, e.g. if the traffic sign shows away from the camera
+    the classificator is then every time wrong because of the training data set
+
+* the image is very small so we added a summand corresponding to the boxing size
+
+## Information about Data Sets
+Here are some use full Information about creating own datasets.
+We can use these information to create a data set for our own purpose.
+The structure of the dataset, described here, amies a uncomplicated way to train YOLOv8 models.
 
 ### Folder structure
 
