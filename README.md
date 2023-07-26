@@ -59,3 +59,11 @@ The structure of the dataset, described here, amies a uncomplicated way to train
 * to care of luminosity and different angles much more data have to be used
 * no overlapping between training and validation data
 * amount of data for different classes should be balanced (200 car pictures, 200 truck pictures)
+
+# Set the following environment variables
+I have set them using .env file
+```
+# https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
+TRAFFIC_SIGN_DIR=/home/a-schulz/kaggle/gtsrb-german-traffic-sign
+PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
+```
