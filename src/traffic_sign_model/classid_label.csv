@@ -1,0 +1,44 @@
+ClassId,Label
+0,20 km/h
+1,30 km/h
+2,50 km/h
+3,60 km/h
+4,70 km/h
+5,80 km/h
+6,cancel 80 km/h
+7,100 km/h
+8,120 km/h
+9,no overtaking
+10,no overtaking for trucks
+11,give way next crossing
+12,give way
+13,take way
+14,stop
+15,no entry
+16,no entry for trucks
+17,no entry with rectangle
+18,attention
+19,attention sharp left turn
+20,attention sharp right turn
+21,attention sharp road
+22,attention uneven road
+23,attention Risk of skidding or slipping
+24,Lane narrowed on one side (right)
+25,attention construction
+26,attention traffic ligth
+27,attention crosswalk
+28,attention kids
+29,attention bicicles
+30,attention snow
+31,attention wildlife
+32,all bans lifted
+33,must turn right
+34,must turn left
+35,must turn straight
+36,must turn right or straight
+37,must turn left or straight
+38,drive along right
+39,drive along left
+40,traffic circle
+41,end no overtaking
+42,end no overtaking for trucks
