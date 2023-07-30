@@ -67,3 +67,6 @@ I have set them using .env file
 TRAFFIC_SIGN_DIR=/home/a-schulz/kaggle/gtsrb-german-traffic-sign
 PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
 ```
+
+# Guid to run jupyer-lab with an activ venv
+https://www.linkedin.com/pulse/how-use-virtual-environment-inside-jupyter-lab-sina-khoshgoftar

@@ -11,16 +11,20 @@ def get_images(dir, count = -1):
     # load images which have to be evaluated from the ai into a list
     # images are in original size and color
     # if bound is positive: only first count files (not images) get analyzed
+    # return value: elements with same index in the first and second array are the same image
     images = []
+    paths = []
     for i, file in enumerate(os.listdir(dir)):
         if i == count:
             break
         path = os.path.join(dir, file)
         if os.path.isfile(path) and is_image(file):
+            paths.append(path)
+
             # images contains images in RGB format
             img = cv2.imread(path)
             images.append(img)
-    return images
+    return paths, images
 
 def process_txt_for_label(directory_path, label):
     data_dict = {}
@@ -39,7 +43,7 @@ def process_txt_for_label(directory_path, label):
                     data_dict[filename[:-4]] = [label] + data_list
     return data_dict
 
-def extract_rectangle_from_image(image, points, output_path):
+def extract_rectangle_from_image(image, points, save=True, output_path="./"):
     x1, y1, x2, y2 = points
 
     height, width = image.shape[:2]
@@ -49,9 +53,14 @@ def extract_rectangle_from_image(image, points, output_path):
     y2_pixel = int(y2 * height)
 
     extracted_rect = image[y1_pixel:y2_pixel, x1_pixel:x2_pixel]
+    
+    if save:
+        cv2.imwrite(output_path, extracted_rect)
+    return extracted_rect
 
-    cv2.imwrite(output_path, extracted_rect)
-
+def write_images(images, path, main_name = ""):
+    for idx, i in enumerate(images):
+        cv2.imwrite(
 
 def convert_dataset(categories, src_dir, dest_dir):
     # convert yolo v8 dataset format to which we used in lectures for image classification
@@ -100,6 +109,11 @@ def convert_dataset(categories, src_dir, dest_dir):
     # TODO clean up directory
 
 if __name__ == "__main__":
-    convert_dataset(["green", "red", "yellow"],
-                    "/home/jay/module/ai_app/self_driving_cars/traffic_lights",
-                    "/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset/traffic_light" )
+#    convert_dataset(["green", "red", "yellow"],
+#                    "/home/jay/module/ai_app/self_driving_cars/traffic_lights",
+#                    "/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset/traffic_light" )
+
+    p, i =  get_images('/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset/')
+
+    print(p)
+    print(i)
