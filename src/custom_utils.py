@@ -44,6 +44,14 @@ def process_txt_for_label(directory_path, label):
     return data_dict
 
 def extract_rectangle_from_image(image, points, save=True, output_path="./"):
+    """
+    Function to extract a rectangle from an image.
+    @param image:
+    @param points:
+    @param save:
+    @param output_path:
+    @return: Image as numpy array.
+    """
     x1, y1, x2, y2 = points
 
     height, width = image.shape[:2]
