@@ -43,13 +43,11 @@ def process_txt_for_label(directory_path, label):
                     data_dict[filename[:-4]] = [label] + data_list
     return data_dict
 
-def extract_rectangle_from_image(image, points, save=True, output_path="./"):
+def extract_rectangle_from_image(image, points):
     """
     Function to extract a rectangle from an image.
     @param image:
     @param points:
-    @param save:
-    @param output_path:
     @return: Image as numpy array.
     """
     x1, y1, x2, y2 = points
@@ -62,19 +60,18 @@ def extract_rectangle_from_image(image, points, save=True, output_path="./"):
 
     extracted_rect = image[y1_pixel:y2_pixel, x1_pixel:x2_pixel]
     
-    # if save:
-    #    cv2.imwrite(output_path, extracted_rect)
     return extracted_rect
 
-def write_images(images, path, main_name = ""):
+def write_images(images, path, main_name = "", type = ".jpg"):
     # Todo
+    """
     if len(images) == 1:
         print(os.path.join(path, main_name))
         print(images)
         cv2.imwrite(os.path.join(path, main_name), images)
-
+    """
     for idx, i in enumerate(images):
-        cv2.imwrite(os.path.join(path, main_name, str(idx)), i)
+        cv2.imwrite(os.path.join(path, (main_name + str(idx) + type)), i)
 
 def convert_dataset(categories, src_dir, dest_dir):
     # convert yolo v8 dataset format to which we used in lectures for image classification
