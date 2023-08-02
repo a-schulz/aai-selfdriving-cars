@@ -65,6 +65,7 @@ I have set them using .env file
 ```
 # https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
 TRAFFIC_SIGN_DIR=/home/a-schulz/kaggle/gtsrb-german-traffic-sign
+DATASET_DIR=/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset
 ```
 
 # Guid to run jupyer-lab with an activ venv

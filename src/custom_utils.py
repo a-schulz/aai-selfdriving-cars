@@ -62,13 +62,19 @@ def extract_rectangle_from_image(image, points, save=True, output_path="./"):
 
     extracted_rect = image[y1_pixel:y2_pixel, x1_pixel:x2_pixel]
     
-    if save:
-        cv2.imwrite(output_path, extracted_rect)
+    # if save:
+    #    cv2.imwrite(output_path, extracted_rect)
     return extracted_rect
 
 def write_images(images, path, main_name = ""):
+    # Todo
+    if len(images) == 1:
+        print(os.path.join(path, main_name))
+        print(images)
+        cv2.imwrite(os.path.join(path, main_name), images)
+
     for idx, i in enumerate(images):
-        cv2.imwrite(
+        cv2.imwrite(os.path.join(path, main_name, str(idx)), i)
 
 def convert_dataset(categories, src_dir, dest_dir):
     # convert yolo v8 dataset format to which we used in lectures for image classification
