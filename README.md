@@ -65,7 +65,6 @@ I have set them using .env file
 ```
 # https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
 TRAFFIC_SIGN_DIR=/home/a-schulz/kaggle/gtsrb-german-traffic-sign
-PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
 ```
 
 # Guid to run jupyer-lab with an activ venv

@@ -162,4 +162,6 @@ pyproject.toml
 poetry.lock
 /runs
 /dataset/traffic_light
+/aai-selfdriving-cars.code-workspace
 /test_out
+/src/scratch.ipynb
