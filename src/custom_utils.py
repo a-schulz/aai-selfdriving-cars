@@ -15,12 +15,8 @@ def get_images(dir, count = -1):
     images = []
     paths = []
     dir_content = sorted(os.listdir(dir))
-    print(dir)
-    print(len(dir_content))
     for i, file in enumerate(dir_content):
-        print(i, file)
         if i == count:
-            print("break")
             break
         path = os.path.join(dir, file)
         if os.path.isfile(path) and is_image(file):
@@ -28,9 +24,9 @@ def get_images(dir, count = -1):
 
             # images contains images in RGB format
             img = cv2.imread(path)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             images.append(img)
 
-    print(len(images))
     return paths, images
 
 def process_txt_for_label(directory_path, label):
@@ -131,5 +127,7 @@ if __name__ == "__main__":
 #                    "/home/jay/module/ai_app/self_driving_cars/traffic_lights",
 #                    "/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset/traffic_light" )
 
-    p, i =  get_images('/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset/traffic_light/original_data/green/')
+    #p, i =  get_images('/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset/traffic_light/original_data/green/')
+    pass
+
 
