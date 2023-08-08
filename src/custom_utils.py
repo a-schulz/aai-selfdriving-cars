@@ -24,7 +24,6 @@ def get_images(dir, count = -1):
 
             # images contains images in RGB format
             img = cv2.imread(path)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             images.append(img)
 
     return paths, images
