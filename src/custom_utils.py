@@ -1,5 +1,6 @@
 import os
 import cv2
+import numpy as np
 
 
 def is_image(filename):
@@ -9,7 +10,7 @@ def is_image(filename):
     return file_extension.lower() in image_extensions
 
 
-def get_images(dir, count=-1):
+def get_images(dir, count=-1, target_size=(147, 74)):
     # load images which have to be evaluated from the ai into a list
     # images are in original size and color
     # if bound is positive: only first count files (not images) get analyzed
@@ -25,13 +26,26 @@ def get_images(dir, count=-1):
             paths.append(path)
 
             # images contains images in RGB format
-            img = cv2.imread(path)
+            img_t = cv2.imread(path)
+            if target_size is not None:
+                img = cv2.resize(img_t, target_size)
+            else:
+                img = img_t
             images.append(img)
 
     return paths, images
 
 
+def write_images(images, path, main_name="", type=".jpg"):
+    # writes image to path: path/main_name(idx).jpg
+    # set also color encoding to RGB
+    for idx, i in enumerate(images):
+        cv2.imwrite(os.path.join(path, (main_name + str(idx) + type)),
+                    cv2.cvtColor(i, cv2.COLOR_BGR2RGB))
+
+
 def process_txt_for_label(directory_path, label):
+    # not in use any more probably delete
     data_dict = {}
     for filename in os.listdir(directory_path):
         if filename.endswith(".txt"):
@@ -70,17 +84,34 @@ def extract_rectangle_from_image(image, points):
     return extracted_rect
 
 
-def write_images(images, path, main_name="", type=".jpg"):
-    # Todo
-    """
-    if len(images) == 1:
-        print(os.path.join(path, main_name))
-        print(images)
-        cv2.imwrite(os.path.join(path, main_name), images)
-    """
-    for idx, i in enumerate(images):
-        cv2.imwrite(os.path.join(path, (main_name + str(idx) + type)),
-                    cv2.cvtColor(i, cv2.COLOR_BGR2RGB))
+def extract_boxes(yolo_res, cls, target_size=None):
+    ex_boxes = []
+    for res in yolo_res:
+        for i, c in enumerate(res.boxes.cls.numpy()):
+            if c == cls:
+                points = res.boxes.xyxyn.numpy()[i]
+                ex_box = extract_rectangle_from_image(
+                    cv2.cvtColor(res.orig_img, cv2.COLOR_BGR2RGB), points)
+                if target_size is not None:
+                    ex_box_resized = cv2.resize(ex_box, target_size)
+                else:
+                    ex_box_resized = ex_box
+                ex_boxes.append(ex_box_resized)
+    return ex_boxes
+
+
+def average_resize(res_dict):
+    hights = []
+    widths = []
+    for l in res_dict:
+        hights += [i.shape[0] for i in res_dict[l]]
+        widths += [i.shape[1] for i in res_dict[l]]
+    avr_x = int(np.average(widths))
+    avr_y = int(np.average(hights))
+    for l in res_dict:
+        for idx, i in enumerate(res_dict[l]):
+            res_dict[l][idx] = cv2.resize(i, (avr_x, avr_y))
+    return res_dict
 
 
 def convert_dataset(categories, src_dir, dest_dir):
@@ -130,6 +161,35 @@ def convert_dataset(categories, src_dir, dest_dir):
         if filename.endswith(".yaml"):
             os.rename(p, dest_path_txt + "/" + filename)
     # TODO clean up directory
+
+
+def read_images_from_directory(directory, target_size=(128, 128)):
+    # Get all images like in the Lecture
+    images = []
+    labels = []
+
+    class_names = []
+    for root, dirs, files in os.walk(directory):
+        for class_name in dirs:
+            class_directory = os.path.join(root, class_name)
+            for filename in os.listdir(class_directory):
+                file_path = os.path.join(class_directory, filename)
+                if os.path.isfile(file_path):
+                    image = cv2.imread(file_path, cv2.COLOR_BGR2GRAY)
+                    if image is not None:
+                        if target_size is not None:
+                            image = cv2.resize(image, target_size)
+                        images.append(image)
+                        labels.append(os.path.basename(
+                            root) + "." + class_name)
+                        if class_name not in class_names:
+                            class_names.append(class_name)
+
+    images = np.array(images)
+    labels = np.array(labels)
+    class_names = np.array(class_names)
+
+    return images, labels, class_names
 
 
 if __name__ == "__main__":
