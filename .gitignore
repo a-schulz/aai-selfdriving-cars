@@ -165,3 +165,4 @@ poetry.lock
 /aai-selfdriving-cars.code-workspace
 /test_out
 /src/scratch.ipynb
+.vscode/
