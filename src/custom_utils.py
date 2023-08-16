@@ -1,6 +1,8 @@
 import os
 import cv2
 import numpy as np
+import yaml
+import shutil
 
 
 def is_image(filename):
@@ -10,16 +12,17 @@ def is_image(filename):
     return file_extension.lower() in image_extensions
 
 
-def get_images(dir, count=-1, target_size=(147, 74)):
+def get_images(dir, n=-1, target_size=None):
     # load images which have to be evaluated from the ai into a list
     # images are in original size and color
     # if bound is positive: only first count files (not images) get analyzed
     # return value: elements with same index in the first and second array are the same image
+    # if n == -1 all images from dir gets read
     images = []
     paths = []
     dir_content = sorted(os.listdir(dir))
     for i, file in enumerate(dir_content):
-        if i == count:
+        if i == n:
             break
         path = os.path.join(dir, file)
         if os.path.isfile(path) and is_image(file):
@@ -114,21 +117,35 @@ def average_resize(res_dict):
     return res_dict
 
 
-def convert_dataset(categories, src_dir, dest_dir):
+def extract_class_names(yaml_path):
+    with open(yaml_path, 'r') as yaml_file:
+        yolo_data = yaml.safe_load(yaml_file)
+
+    if 'names' in yolo_data:
+        class_names = yolo_data['names']
+        return class_names
+    else:
+        return []
+
+
+def convert_dataset(src_dir, dest_dir):
     # convert yolo v8 dataset format to which we used in lectures for image classification
-    # the  order of categories have to be the same as in the yaml file
+    # it returns the used categories from the yaml file 
+
+    yaml_path = os.path.join(src_dir, "data.yaml")
+    if not os.path.exists(yaml_path ):
+        # indicator if directory is already converted
+        # then return class names
+        return os.listdir(src_dir)
+
+    classes = extract_class_names(yaml_path )
     for data_use in ["train", "valid", "test"]:
 
         # create folder for each category in dest_dir
-        for c in categories:
+        for c in classes:
             path = dest_dir + "/" + c
             if not os.path.exists(path):
                 os.mkdir(path)
-
-        # path where the txt files get stored to not destroy the box position
-        dest_path_txt = dest_dir + "/__labels__"
-        if not os.path.exists(dest_path_txt):
-            os.mkdir(dest_path_txt)
 
         txt_path = os.path.join(src_dir, data_use, "labels")
         for filename_txt in os.listdir(txt_path):
@@ -139,29 +156,28 @@ def convert_dataset(categories, src_dir, dest_dir):
                     # Label aus der ersten Zeile extrahieren
                     label = int(lines[0].split()[0])
                     dest_folder = ""
-                    for i in range(0, len(categories)):
+                    for i in range(0, len(classes)):
                         if label == i:
-                            dest_folder = categories[i]
+                            dest_folder = classes[i]
 
                     # Zielpfad für die Verschiebung erstellen
-
-                    # Verschiebung der Datei in den entsprechenden Ordner
-                    # os.rename(txt_filepath, dest_path_txt)
-
-                    # dest_path_tmp = os.path.join(dest_dir, dest_folder, filename_txt)
                     tmp = txt_filepath.replace(".txt", ".jpg")
                     jpg_filepath = tmp.replace("labels", "images")
 
                     dest_path_jpg = os.path.join(
                         dest_dir, dest_folder, filename_txt.replace(".txt", ".jpg"))
                     os.rename(jpg_filepath, dest_path_jpg)
-
+    # classes = ["green", "red", "yellow"]
     for filename in os.listdir(src_dir):
-        p = os.path.join(src_dir, filename)
-        if filename.endswith(".yaml"):
-            os.rename(p, dest_path_txt + "/" + filename)
-    # TODO clean up directory
+        if filename not in classes:
+            print(filename)
+            print()
+            if os.path.isdir(os.path.join(src_dir, filename)):
+                shutil.rmtree(os.path.join(src_dir, filename))
+            else:
+                os.remove(os.path.join(src_dir, filename))
 
+    return classes
 
 def read_images_from_directory(directory, target_size=(128, 128)):
     # Get all images like in the Lecture
@@ -193,9 +209,8 @@ def read_images_from_directory(directory, target_size=(128, 128)):
 
 
 if __name__ == "__main__":
-    #    convert_dataset(["green", "red", "yellow"],
-    #                    "/home/jay/module/ai_app/self_driving_cars/traffic_lights",
-    #                    "/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset/traffic_light" )
+    convert_dataset("/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset/traffic_light/original_data", "/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset/traffic_light/original_data" )
 
     # p, i =  get_images('/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset/traffic_light/original_data/green/')
+    # Beispielaufruf
     pass
