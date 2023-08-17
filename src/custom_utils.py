@@ -90,9 +90,9 @@ def extract_rectangle_from_image(image, points):
 def extract_boxes(yolo_res, cls, target_size=None):
     ex_boxes = []
     for res in yolo_res:
-        for i, c in enumerate(res.boxes.cls.numpy()):
+        for i, c in enumerate(res.boxes.cls.cpu().numpy()):
             if c == cls:
-                points = res.boxes.xyxyn.numpy()[i]
+                points = res.boxes.xyxyn.cpu().numpy()[i]
                 ex_box = extract_rectangle_from_image(
                     cv2.cvtColor(res.orig_img, cv2.COLOR_BGR2RGB), points)
                 if target_size is not None:
