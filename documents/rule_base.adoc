@@ -1,6 +1,6 @@
-= Rule Base
+# Rule Base
 
-== Current states of car
+## Current states of car
 
 * driving
 ** forward
@@ -21,7 +21,7 @@
 ** parking light
 ** dimmed headlights
 
-== Observation
+## Observation
 
 State of movable objects:
 
@@ -75,7 +75,7 @@ State of movable objects:
 ** restricted area
 ** no parking area
 
-== Action
+## Action
 
 * change driving parameters
 ** de-/accelerate
@@ -86,7 +86,7 @@ State of movable objects:
 * perform new route planning
 * (turn wipers on/off)
 
-== Rule Base
+## Rule Base
 
 if driving & lights off
      & day
@@ -252,35 +252,3 @@ if driving & forward
 			then deccelarate
 		&windy 
 		then nothing
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,81 +1,41 @@
 # aai-selfdriving-cars
-The goal of this Project  is to create a rudimentary AI System to identify different objects in a street scene.
+### Content
+1.  [before Implementation](#before-implementation)
+2.  [Aim](#aim)
+3.  [The Architecture](#the-architecture)
+4.  [Repository structure](#repository-structure)
+5. [Why not only one AI Model](#why-not-only-one-ai-model)
+
+## before Implementation
+Before we could start our implementation, we tried to get a feeling of the problem space.
+In order to do that, we collect possible states of a car, observation from sensors a car can collect and the action a driver can do.  We used that finally in a rule base.
+This pre work is in /documents/rule_base.pdf stored.
+
+
+
+## Aim
+Because a self driving car is a very complex system, we implement just a proof of concept for object detection and classification from a camera sensor.
 To achieve this, we combine different AI models:
 
 * YOLOv8 
   * used to detect traffic lights and other objects
   * also used to generate dataset for traffic light classification
-* RoboflowModel (https://universe.roboflow.com/tu-wien-pfowz/traffic-sign-detection-yolov8/model/3)
-    * Model from Roboflow to detect if there are traffic signs in the image
+* [Roboflow Model](https://universe.roboflow.com/tu-wien-pfowz/traffic-sign-detection-yolov8/model/3)
     * detect signs in a pure image. (Yolo detects only stop signs, so we needed another detection model)
-    * using the yolov8 Detection API
 * Self trained model to detect the type of the traffic sign (ResNet50)
     *  This model uses the image from the Roboflow model, the image will be cropped and the cropped image will be classified by the ResNet50 model
 * Traffic light classification (from lecture but with different model)
 For specific objects like traffic lights and traffic signs we use the detected position of these to classify the exact class of this category.
 
-## The Architecture 
 
-## Dataset 
-To fine tune the yolov8n model we download training pictures with the src/download_images.py script.
-After that we label this pictures with the website https://www.makesense.ai/
+## usage
+First of all install the required packages with
+```
+cd src
+pip install -r requirements.txt
+```
 
-
-
-# The YOLO v8
-Yolo (You only look once) is an Deep Learning Model for computer vision tasks (e.g object detection, segmentation)
-
-## YOLO v8 pretrained  models
-There are 6 pretrained models available which just differs in size (of Parameters) and runtime.
-They got trained at the COCO dataset and cover 79 categories:
-0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic light', 
-10: 'fire hydrant', 11: 'stop sign', 12: 'parking meter', 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 
-20: 'elephant', 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag', 27: 'tie', 28: 'suitcase', 29: 'frisbee', 
-30: 'skis', 31: 'snowboard', 32: 'sports ball', 33: 'kite', 34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis racket', 39: 'bottle', 
-40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl', 46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 
-50: 'broccoli', 51: 'carrot', 52: 'hot dog', 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed', 
-60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard', 67: 'cell phone', 68: 'microwave', 69: 'oven', 
-70: 'toaster', 71: 'sink', 72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush'
-
-They are saved here
-[Label csv](src/yolo/yolov8n_classuid_label.csv)
-
-# our way of "fine tuning"
-In order to be more precised for object classification with the pretrained yolo model (for example: is the detected traffic light green or red).
-We decided to detect the object with the default yolo model and use the information of the position to create a new image which just get classified.
-For classification we tried to create our own classificator. 
-We implement just a proof of concept for traffic lights and traffic signs!
-
-## problems with this approach
-### the dataset
-### the extracted image form original road scene
-* traffic lights detected from yolo may have no light, e.g. if the traffic sign shows away from the camera
-    the classificator is then every time wrong because of the training data set
-
-* the image is very small so we added a summand corresponding to the boxing size
-
-## Information about Data Sets
-Here are some use full Information about creating own datasets.
-We can use these information to create a data set for our own purpose.
-The structure of the dataset, described here, amies a uncomplicated way to train YOLOv8 models.
-
-### Folder structure
-
-./"Name" dataset
-    images/
-        test
-        train
-        valid
-
-### Data Tips and Tricks
-* 20% valid - 80% train data or 30% - 70% 
-* ensure a good diversity and variance (no sequences a video clip as frames, because there are heavily correlated)
-* to care of luminosity and different angles much more data have to be used
-* no overlapping between training and validation data
-* amount of data for different classes should be balanced (200 car pictures, 200 truck pictures)
-
-# Set the following environment variables
-I have set them using .env file in src folder.
+Than set up all environment variables in src/.env:
 ```
 # https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
 TRAFFIC_SIGN_DIR=~/kaggle/gtsrb-german-traffic-sign
@@ -85,6 +45,32 @@ TRAFFIC_LIGHT_CUSTOM_DATA=~/aai-selfdriving-cars/dataset/traffic_light/custom_da
 TRAFFIC_LIGHT_DROP_DATA=~/aai-selfdriving-cars/dataset/traffic_light/drop_outs/
 TRAFFIC_SIGN_DIR=~/aai-selfdriving-cars/dataset/traffic_sign/
 ```
+> To try the main file with own pictures please store them in:
+> dataset/test_data
 
-# Guid to run jupyer-lab with an activ venv
-https://www.linkedin.com/pulse/how-use-virtual-environment-inside-jupyter-lab-sina-khoshgoftar
+### usage of the notebooks
+The precised usage descriptions are in the specific notebooks.
+Please have a look to each of them.
+
+To detect Objects in images you should use the "main" notebook.
+In this notebook are all the models combined.
+So it can detect all yolov8 pretrained objects, traffic signs and lights.
+
+To build the traffic light classificator and to create its train dataset have a look in "traffic_light_classification.py"
+
+The ResNet notebook defines all required Objects and helper to train and use the traffic sign classification.
+
+## Repository structure
+Here is a list of the directories and they content
+
+### dataset
+Here is the data for training the traffic sing and light as well to test images.
+
+#### traffic light
+Contains original dataset, dropped data and the actual custom dataset where the model is trained on.
+
+### src
+Here all the source, except the data to run the classification
+
+### documents
+Here are the documents we create before we implement the ai system.
