@@ -1,13 +1,16 @@
 # aai-selfdriving-cars
 The goal of this Project  is to create a rudimentary AI System to identify different objects in a street scene.
-To achieve this, we combine different AI's:
+To achieve this, we combine different AI models:
+
 * YOLOv8 
   * used to detect traffic lights and other objects
   * also used to generate dataset for traffic light classification
-* Traffic sign detection 
-  * it is a model from Roboflow
-  * detect signs in a pure image. (Yolo detects only stop signs, so we needed another detection model)
-* Traffic sign classification (from Roboflow but with own changes)
+* RoboflowModel (https://universe.roboflow.com/tu-wien-pfowz/traffic-sign-detection-yolov8/model/3)
+    * Model from Roboflow to detect if there are traffic signs in the image
+    * detect signs in a pure image. (Yolo detects only stop signs, so we needed another detection model)
+    * using the yolov8 Detection API
+* Self trained model to detect the type of the traffic sign (ResNet50)
+    *  This model uses the image from the Roboflow model, the image will be cropped and the cropped image will be classified by the ResNet50 model
 * Traffic light classification (from lecture but with different model)
 For specific objects like traffic lights and traffic signs we use the detected position of these to classify the exact class of this category.
 
@@ -33,6 +36,9 @@ They got trained at the COCO dataset and cover 79 categories:
 50: 'broccoli', 51: 'carrot', 52: 'hot dog', 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed', 
 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard', 67: 'cell phone', 68: 'microwave', 69: 'oven', 
 70: 'toaster', 71: 'sink', 72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush'
+
+They are saved here
+[Label csv](src/yolo/yolov8n_classuid_label.csv)
 
 # our way of "fine tuning"
 In order to be more precised for object classification with the pretrained yolo model (for example: is the detected traffic light green or red).
