@@ -75,11 +75,15 @@ The structure of the dataset, described here, amies a uncomplicated way to train
 * amount of data for different classes should be balanced (200 car pictures, 200 truck pictures)
 
 # Set the following environment variables
-I have set them using .env file
+I have set them using .env file in src folder.
 ```
 # https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
-TRAFFIC_SIGN_DIR=/home/a-schulz/kaggle/gtsrb-german-traffic-sign
-DATASET_DIR=/home/jay/module/ai_app/self_driving_cars/aai-selfdriving-cars/dataset
+TRAFFIC_SIGN_DIR=~/kaggle/gtsrb-german-traffic-sign
+DATASET_DIR=~/aai-selfdriving-cars/dataset
+TRAFFIC_LIGHT_ORIGINAL_DATA=~/aai-selfdriving-cars/dataset/traffic_light/original_data/
+TRAFFIC_LIGHT_CUSTOM_DATA=~/aai-selfdriving-cars/dataset/traffic_light/custom_data/
+TRAFFIC_LIGHT_DROP_DATA=~/aai-selfdriving-cars/dataset/traffic_light/drop_outs/
+TRAFFIC_SIGN_DIR=~/aai-selfdriving-cars/dataset/traffic_sign/
 ```
 
 # Guid to run jupyer-lab with an activ venv
