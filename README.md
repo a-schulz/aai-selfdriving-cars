@@ -1,6 +1,14 @@
 # aai-selfdriving-cars
-The goal of this Project  is to create a rudimentary AI System to identify different street situations form a driver point of view.
-To achieve it, we analyze a picture with the yolov8n model to approximate a realtime application (disclaimer: it is not a realtime system).
+The goal of this Project  is to create a rudimentary AI System to identify different objects in a street scene.
+To achieve this, we combine different AI's:
+* YOLOv8 
+  * used to detect traffic lights and other objects
+  * also used to generate dataset for traffic light classification
+* Traffic sign detection 
+  * it is a model from Roboflow
+  * detect signs in a pure image. (Yolo detects only stop signs, so we needed another detection model)
+* Traffic sign classification (from Roboflow but with own changes)
+* Traffic light classification (from lecture but with different model)
 For specific objects like traffic lights and traffic signs we use the detected position of these to classify the exact class of this category.
 
 ## The Architecture 
