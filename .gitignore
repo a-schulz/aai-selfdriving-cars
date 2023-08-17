@@ -168,3 +168,4 @@ poetry.lock
 /test_out
 /src/scratch.ipynb
 .vscode/
+prediction.jpg

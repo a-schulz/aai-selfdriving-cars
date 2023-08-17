@@ -1,15 +1,20 @@
 # aai-selfdriving-cars
 ### Content
-1.  [before Implementation](#before-implementation)
+1.  [How we got here](#How-we-got-here)
 2.  [Aim](#aim)
 3.  [The Architecture](#the-architecture)
 4.  [Repository structure](#repository-structure)
 5. [Why not only one AI Model](#why-not-only-one-ai-model)
 
-## before Implementation
+# How we got here
+### First steps
 Before we could start our implementation, we tried to get a feeling of the problem space.
-In order to do that, we collect possible states of a car, observation from sensors a car can collect and the action a driver can do.  We used that finally in a rule base.
-This pre work is in /documents/rule_base.pdf stored.
+In order to do that, we had to think of a human based solution, we collect possible states of a car, observation from sensors a car can collect and the action a driver can do.  We used that finally in a rule base.
+Those represented the observations of the self-driving car. The surrounding and the actions for the vehicle. You can find those here: [rule_base](documents/rule_base.adoc) and [state_observation](documents/state_observation_action.pdf)
+### Next steps
+Now we needed to think of a useful architecture. We decided to use multiple optimized models for specific tasks such as traffic light classification and traffic sign classification.
+### Implementation
+Most of the implementation we tried new things had to fight with hardware problems like the difference of cpu cuda and out of memory errors. But in the end we got a working solution with multiple models. On the way there we search for datasets and read code of other users mostly on kaggle.
 
 
 
@@ -22,6 +27,7 @@ To achieve this, we combine different AI models:
   * also used to generate dataset for traffic light classification
 * [Roboflow Model](https://universe.roboflow.com/tu-wien-pfowz/traffic-sign-detection-yolov8/model/3)
     * detect signs in a pure image. (Yolo detects only stop signs, so we needed another detection model)
+    * using the yolov8 Detection API
 * Self trained model to detect the type of the traffic sign (ResNet50)
     *  This model uses the image from the Roboflow model, the image will be cropped and the cropped image will be classified by the ResNet50 model
 * Traffic light classification (from lecture but with different model)
@@ -35,16 +41,14 @@ cd src
 pip install -r requirements.txt
 ```
 
-Than set up all environment variables in src/.env:
-```
-# https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign
-TRAFFIC_SIGN_DIR=~/kaggle/gtsrb-german-traffic-sign
-DATASET_DIR=~/aai-selfdriving-cars/dataset
-TRAFFIC_LIGHT_ORIGINAL_DATA=~/aai-selfdriving-cars/dataset/traffic_light/original_data/
-TRAFFIC_LIGHT_CUSTOM_DATA=~/aai-selfdriving-cars/dataset/traffic_light/custom_data/
-TRAFFIC_LIGHT_DROP_DATA=~/aai-selfdriving-cars/dataset/traffic_light/drop_outs/
-TRAFFIC_SIGN_DIR=~/aai-selfdriving-cars/dataset/traffic_sign/
-```
+### To run the code you have to set the following environment variables
+I have set them using .env file in src folder.
+See [demo.env](src/demo.env) for an example.
+The most important one is the path to the dataset folder. `DATASET_DIR`
+
+The heart of our project is the [main.ipynb](src/main.ipynb) file. Here you find the definitions of all the models.
+Respectively we have separated some code into other files. Otherwise the main file would be too big.
+
 > To try the main file with own pictures please store them in:
 > dataset/test_data
 
@@ -74,3 +78,11 @@ Here all the source, except the data to run the classification
 
 ### documents
 Here are the documents we create before we implement the ai system.
+
+# Our problems
+## the dataset
+## the extracted image form original road scene
+* traffic lights detected from yolo may have no light, e.g. if the traffic sign shows away from the camera
+  the classificator is then every time wrong because of the training data set
+
+* the image is very small so we added a summand corresponding to the boxing size
