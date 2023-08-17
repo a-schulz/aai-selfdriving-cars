@@ -161,7 +161,9 @@ cython_debug/
 pyproject.toml
 poetry.lock
 /runs
-/dataset/traffic_light
+/dataset/traffic_light/drop_outs
+/dataset/traffic_light/original_data
+
 /aai-selfdriving-cars.code-workspace
 /test_out
 /src/scratch.ipynb
